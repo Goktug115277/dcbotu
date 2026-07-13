@@ -123,5 +123,5 @@ export async function startBot() {
   await client.login(token);
 }
 
-// Botu başlatıyoruz
+// Botu başlatıyoru
 startBot();
