@@ -13,7 +13,7 @@ import {
   type ChatInputCommandInteraction,
   type ButtonInteraction,
 } from "discord.js";
-import express from "express"; // Render port hatasını çözmek için
+import express from "express"; // Render port hatasını çözmek içi
 
 // 1. BASİT LOGGER SİSTEMİ (Harici dosya bağımlılığını bitirmek için)
 const logger = {
