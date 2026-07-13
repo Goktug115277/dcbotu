@@ -14,7 +14,7 @@ import {
   type ButtonInteraction,
 } from "discord.js";
 
-// Basit Logger
+// Basit Logge
 const logger = {
   info: (msg: string | object, detail?: string) => console.log(`[INFO]`, msg, detail || ""),
   error: (msg: string | object, detail?: string) => console.error(`[ERROR]`, msg, detail || "")
