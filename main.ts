@@ -13,23 +13,19 @@ import {
   type ChatInputCommandInteraction,
   type ButtonInteraction,
 } from "discord.js";
-import express from "express"; // Render port hatasını çözmek içi
 
-// 1. BASİT LOGGER SİSTEMİ (Harici dosya bağımlılığını bitirmek için)
+// Basit Logger
 const logger = {
   info: (msg: string | object, detail?: string) => console.log(`[INFO]`, msg, detail || ""),
   error: (msg: string | object, detail?: string) => console.error(`[ERROR]`, msg, detail || "")
 };
 
-// 2. ORTAM DEĞİŞKENLERİ KONTROLÜ
 const token = process.env["DISCORD_BOT_TOKEN"];
 const clientId = process.env["DISCORD_CLIENT_ID"];
-const PORT = process.env["PORT"] || 3000; // Render otomatik bir port atar
 
 if (!token) throw new Error("DISCORD_BOT_TOKEN environment variable is required");
 if (!clientId) throw new Error("DISCORD_CLIENT_ID environment variable is required");
 
-// 3. SLASH KOMUT TANIMI
 const command = new SlashCommandBuilder()
   .setName("gelcek")
   .setDescription("Oyun için birini ara")
@@ -37,7 +33,6 @@ const command = new SlashCommandBuilder()
     opt.setName("oyun").setDescription("Oyun adı").setRequired(true)
   );
 
-// 4. KOMUTLARI DİSCORD'A KAYDETME FONKSİYONU
 async function registerCommands() {
   const rest = new REST().setToken(token!);
   try {
@@ -50,7 +45,6 @@ async function registerCommands() {
   }
 }
 
-// 5. ETKİLEŞİM YÖNETİCİLERİ (Handlers)
 async function handleGelcek(interaction: ChatInputCommandInteraction) {
   const oyun = interaction.options.getString("oyun", true);
   const kullanici = interaction.user;
@@ -97,13 +91,7 @@ async function handleGelcemButton(interaction: ButtonInteraction) {
   });
 }
 
-// 6. BOTU BAŞLATMA VE RENDER İÇİN WEB SERVER KURULUMU
 export async function startBot() {
-  // Render port hatası vermesin ve bot açık kalsın diye mini web sunucusu açıyoruz
-  const app = express();
-  app.get("/", (req, res) => res.send("Bot aktif ve çalışıyor!"));
-  app.listen(PORT, () => logger.info(`Render port dinleniyor: ${PORT}`));
-
   await registerCommands();
 
   const client = new Client({
@@ -135,5 +123,5 @@ export async function startBot() {
   await client.login(token);
 }
 
-// Botu direkt çalıştırmak için (efter export)
+// Botu başlatıyoruz
 startBot();
